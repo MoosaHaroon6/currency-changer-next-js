@@ -3,31 +3,39 @@ import { useState } from "react";
 import { InputBox } from "../components/exportFiles";
 import useCurrencyInfo from "../hooks/useCurrency";
 
-function App() {
+export default function Home() {
+  // useable hooks 
   const [amount, setAmount] = useState(0);
   const [from, setFrom] = useState("usd");
   const [to, setTo] = useState("pkr");
   const [convertedAmount, setConvertedAmount] = useState(0);
 
-  const currencyInfo = useCurrencyInfo(from);
+  const currencyInfo = useCurrencyInfo(from) || {};
 
-  const options = Object.keys(currencyInfo);
+  const options = currencyInfo ? Object.keys(currencyInfo) : [];  // extracted keys 
 
-  const swap = () => {
+
+  // swapping function you can also name it swap :]
+  const toggle = () => {
     setFrom(to);
     setTo(from);
-    setConvertedAmount(amount * (currencyInfo[to] || 1)); // Update the converted amount after swapping
+    setConvertedAmount(amount * (currencyInfo[to] || 1));
   };
 
+
+  // currency converter / result handler 
   const convert = () => {
-    setConvertedAmount(amount * (currencyInfo[to] || 1)); // Use a fallback value if the currency rate is missing
+    setConvertedAmount(amount * (currencyInfo[to] || 1));
   };
 
   return (
     <div
       className="w-full h-screen flex flex-wrap justify-center items-center bg-cover bg-no-repeat"
       style={{
-        backgroundImage: `url('https://images.pexels.com/photos/3532540/pexels-photo-3532540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`,
+        backgroundImage: "url('https://ideogram.ai/assets/progressive-image/balanced/response/PWnkG22CQIChtzCWTkEG5A')",
+        backgroundSize: 'cover', // optional to cover the entire element
+        backgroundPosition: 'center', // optional for centering the image
+        height: '100vh', // full viewport height
       }}
     >
       <div className="w-full">
@@ -45,14 +53,13 @@ function App() {
                 currencyOptions={options}
                 onCurrencyChange={(currency: string) => setFrom(currency)}
                 selectCurrency={from}
-                onAmountChange={(amount: number) => setAmount(amount)}
-              />
+                onAmountChange={(amount: number) => setAmount(amount)} className={""} amountDisable={false} currencyDisable={false} />
             </div>
             <div className="relative w-full h-0.5">
               <button
                 type="button"
                 className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-blue-600 text-white px-2 py-0.5"
-                onClick={swap}
+                onClick={toggle}
               >
                 swap
               </button>
@@ -64,8 +71,9 @@ function App() {
                 currencyOptions={options}
                 onCurrencyChange={(currency: string) => setTo(currency)}
                 selectCurrency={to}
-                amountDisable
-              />
+                amountDisable className={""} onAmountChange={function (amount: number): void {
+                  throw new Error("Function not implemented.");
+                }} currencyDisable={false} />
             </div>
             <button type="submit" className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg">
               Convert {from.toUpperCase()} to {to.toUpperCase()}
@@ -76,5 +84,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
