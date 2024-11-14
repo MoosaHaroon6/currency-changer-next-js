@@ -53,7 +53,10 @@ export default function Home() {
                 currencyOptions={options}
                 onCurrencyChange={(currency: string) => setFrom(currency)}
                 selectCurrency={from}
-                onAmountChange={(amount: number) => setAmount(amount)} className={""} amountDisable={false} currencyDisable={false} />
+                onAmountChange={(amount: number) => setAmount(amount)}
+                className={""}
+                amountDisable={false}
+                currencyDisable={false} />
             </div>
             <div className="relative w-full h-0.5">
               <button
@@ -71,9 +74,10 @@ export default function Home() {
                 currencyOptions={options}
                 onCurrencyChange={(currency: string) => setTo(currency)}
                 selectCurrency={to}
-                amountDisable className={""} onAmountChange={function (amount: number): void {
-                  throw new Error("Function not implemented.");
-                }} currencyDisable={false} />
+                amountDisable className={""}
+                currencyDisable={false}
+                onAmountChange={() => { }}
+              />
             </div>
             <button type="submit" className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg">
               Convert {from.toUpperCase()} to {to.toUpperCase()}
